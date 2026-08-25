@@ -1,4 +1,26 @@
-# React + TypeScript + Vite
+# Escrow market frontend
+
+```bash
+npm install
+```
+
+Create `.env` in this folder with the deployed contract address:
+
+```env
+VITE_ESCROW_ADDRESS=0xYourEscrowAddress
+```
+
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+Connect MetaMask to the same network as the deployment. The page reads the inventory from `getAllItems()` and sends ETH to `take()`.
+
+---
+
+## Template notes
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
