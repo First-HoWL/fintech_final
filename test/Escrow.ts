@@ -17,9 +17,10 @@ describe("Escrow", function () {
     const apple = items[0];
     const totalPrice = apple.price * 2n;
 
-    await expect(
-      escrow.connect(buyer).take(apple.id, 2, { value: totalPrice })
-    ).to.not.be.reverted;
+    await escrow.connect(buyer).take(apple.id, 2, { value: totalPrice });
+
+    const updatedItem = (await escrow.getAllItems())[0];
+    expect(updatedItem.count).to.equal(apple.count - 2n);
   });
 
   it("Should decrease item count after purchase", async function () {
@@ -100,9 +101,12 @@ describe("Escrow", function () {
   it("Should allow owner to addItems", async function () {
     const { escrow, owner } = await deployFixture();
 
-    await expect(
-      escrow.connect(owner).addItems("Bread", 5000, 10)
-    ).to.not.be.reverted;
+    await escrow.connect(owner).addItems("Bread", 5000, 10);
+
+    const items = await escrow.getAllItems();
+    expect(items.at(-1)?.name).to.equal("Bread");
+    expect(items.at(-1)?.price).to.equal(5000n);
+    expect(items.at(-1)?.count).to.equal(10n);
   });
 
   it("Should only allow owner to changeOwner", async function () {
